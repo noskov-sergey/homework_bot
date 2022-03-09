@@ -44,10 +44,15 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    homeworks = response['homeworks']
-    return homeworks
-    ...
-
+    if type(response) is not dict:
+        raise TypeError('Увы. не работает. В ответ на запрос должен прийти словарь')
+    elif type(response['homeworks']) is not list:
+        raise TypeError('Увы, не работает. Домашняя работата должна передавать список')
+    elif ['homeworks'] not in response:
+        raise IndexError('Увы, не работает. Домашней работы нет в переданных данных')
+    else:
+        return response['homeworks']
+    
 
 def parse_status(homework):
     homework_name = ...
