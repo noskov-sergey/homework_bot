@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+from pprint import pprint
 
 from telegram import Bot
 import telegram
@@ -35,14 +36,16 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
+    """Делает запрос к эндпоинту API-сервиса."""
     timestamp = current_timestamp or int(time.time())
-    params = {'from_date': timestamp}
-
-    ...
+    params = {'from_date': 1644457054}
+    homework_statuses = requests.get(ENDPOINT, headers=HEADERS, params=params)
+    return homework_statuses.json()
 
 
 def check_response(response):
-
+    homeworks = response['homeworks']
+    return homeworks
     ...
 
 
@@ -59,8 +62,11 @@ def parse_status(homework):
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
-def check_tokens(PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID):
-    if PRACTICUM_TOKEN and TELEGRAM_TOKEN or TELEGRAM_CHAT_ID is None:
+def check_tokens():
+    """Проверяет доступность переменных окружения,
+        которые необходимы для работы программы."""
+    token_list = (PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
+    if None or '' in token_list:
         return False
     else:
         return True
@@ -68,21 +74,19 @@ def check_tokens(PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID):
 
 def main():
     """Основная логика работы бота."""
-    print(check_tokens(PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID))
-    print(PRACTICUM_TOKEN)
-    print(TELEGRAM_TOKEN)
-    print(TELEGRAM_CHAT_ID)
     ...
 
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     current_timestamp = int(time.time())
 
-    ...
+    check_tokens()
 
     while True:
+        print('lol')
         try:
-            response = ...
-
+            response = get_api_answer(current_timestamp)
+            pprint(response)
+            print(check_response(response))
             ...
 
             current_timestamp = ...
