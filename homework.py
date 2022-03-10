@@ -1,7 +1,6 @@
 import logging
 import os
 import time
-from pprint import pprint
 
 from telegram import Bot
 import telegram
@@ -38,7 +37,7 @@ def send_message(bot, message):
 def get_api_answer(current_timestamp):
     """Делает запрос к эндпоинту API-сервиса."""
     timestamp = current_timestamp or int(time.time())
-    params = {'from_date': 1644458933}
+    params = {'from_date': 0}
     try:
         homework_statuses = requests.get(
             ENDPOINT, headers=HEADERS, params=params)
@@ -95,6 +94,7 @@ def main():
             response = get_api_answer(current_timestamp)
             homework = check_response(response)
             lol = parse_status(homework)
+            print(lol)
             current_timestamp = ...
             time.sleep(RETRY_TIME)
         except Exception as error:
