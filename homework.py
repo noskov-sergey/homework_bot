@@ -38,29 +38,37 @@ def send_message(bot, message):
 def get_api_answer(current_timestamp):
     """Делает запрос к эндпоинту API-сервиса."""
     timestamp = current_timestamp or int(time.time())
-    params = {'from_date': 1644457054}
-    homework_statuses = requests.get(ENDPOINT, headers=HEADERS, params=params)
-    return homework_statuses.json()
+    params = {'from_date': 1644458933}
+    try:
+        homework_statuses = requests.get(
+            ENDPOINT, headers=HEADERS, params=params)
+        return homework_statuses.json()
+    except Exception:
+        raise Exception('Увы. Произошла ошибка при запросе к серверу.')
 
 
 def check_response(response):
     if type(response) is not dict:
-        raise TypeError('Увы. не работает. В ответ на запрос должен прийти словарь')
+        raise TypeError(
+            'Увы. не работает. В ответ на запрос должен прийти словарь')
     elif type(response['homeworks']) is not list:
-        raise TypeError('Увы, не работает. Домашняя работата должна передавать список')
-    elif ['homeworks'] not in response:
-        raise IndexError('Увы, не работает. Домашней работы нет в переданных данных')
+        raise TypeError(
+            'Увы, не работает. Домашняя работата должна передавать список')
+    elif ('homeworks') not in response:
+        raise IndexError(
+            'Увы, не работает. Домашней работы нет в переданных данных')
     else:
-        return response['homeworks']
-    
+        return response['homeworks'][0]
+
 
 def parse_status(homework):
-    homework_name = ...
-    homework_status = ...
+    """Извлекает из информации о конкретной домашней работе статус этой работы."""
+    homework_name = homework['homework_name']
+    homework_status = homework['status']
 
     ...
 
-    verdict = ...
+    verdict = HOMEWORK_STATUSES[homework_status]
 
     ...
 
@@ -70,8 +78,8 @@ def parse_status(homework):
 def check_tokens():
     """Проверяет доступность переменных окружения,
         которые необходимы для работы программы."""
-    token_list = (PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID)
-    if None or '' in token_list:
+    token_list = [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]
+    if None in token_list:
         return False
     else:
         return True
@@ -79,24 +87,16 @@ def check_tokens():
 
 def main():
     """Основная логика работы бота."""
-    ...
-
+    print(check_tokens())
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     current_timestamp = int(time.time())
-
-    check_tokens()
-
     while True:
-        print('lol')
         try:
             response = get_api_answer(current_timestamp)
-            pprint(response)
-            print(check_response(response))
-            ...
-
+            homework = check_response(response)
+            lol = parse_status(homework)
             current_timestamp = ...
             time.sleep(RETRY_TIME)
-
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             ...
@@ -107,5 +107,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-print(check_tokens)
