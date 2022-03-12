@@ -58,6 +58,7 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
+    """Проверяет ответ API на корректность."""
     if type(response) is not dict:
         raise TypeError(
             'В ответ от эндпоинта пришел не словарь.')
@@ -82,7 +83,9 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Извлекает из информации о конкретной домашней работе статус этой работы."""
+    """Извлекает из информации о конкретной
+    домашней работе статус работы.
+    """
     homework_name = homework['homework_name']
     homework_status = homework['status']
     verdict = HOMEWORK_STATUSES[homework_status]
@@ -90,8 +93,9 @@ def parse_status(homework):
 
 
 def check_tokens():
-    """Проверяет доступность переменных окружения,
-        которые необходимы для работы программы."""
+    """Проверяет доступность переменных окружения, 
+    которые необходимы для работы программы.
+    """
     token_list = [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]
     if None in token_list:
         logging.critical('Ошибка при запросе к основному API.')
