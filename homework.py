@@ -66,9 +66,6 @@ def check_response(response):
         logging.error('Отсутствует ключ homeworks.')
         raise IndexError(
             'Отсутствует ключ homeworks.')
-    elif len(response['homeworks']) == 0:
-        raise ValueError(
-            'Пришел пустой список домашней работы.')
     elif ('homeworks') not in response:
         raise IndexError(
             'Отсутствует ключ homeworks.')
@@ -118,6 +115,7 @@ def main():
         try:
             response = get_api_answer(current_timestamp)
             homeworks = check_response(response)
+            print(homeworks)
             if len(homeworks) != 0:
                 homework = homeworks[0]
                 current_status = homework['status']
