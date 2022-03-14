@@ -170,7 +170,7 @@ def main():
                         'Статус о работе собран из API, но обновлений нет.')
                     time.sleep(RETRY_TIME)
             else:
-                logger.debug(
+                logger.info(
                     'Нет работ, которые вы бы могли отслеживать.')
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
