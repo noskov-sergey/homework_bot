@@ -56,8 +56,8 @@ def get_api_answer(current_timestamp):
     """Делает запрос к эндпоинту API-сервиса."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
-
     try:
+        logger.debug('Делаю запрос на сервер API.')
         homework_statuses = requests.get(
             ENDPOINT, headers=HEADERS, params=params)
         if homework_statuses.status_code == HTTPStatus.OK:
@@ -125,6 +125,7 @@ def check_tokens():
         'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
         'TELEGRAM_CHAT_ID': TELEGRAM_CHAT_ID
     }
+    logger.debug('Проверяю переменные окружения.')
     for token, var in token_list.items():
         if var is None:
             logger.critical(
@@ -139,8 +140,10 @@ def main():
     """Основная логика работы бота."""
     PREVIOUS_STATUS = ''
     current_timestamp = int(time.time())
+    logger.debug('Запускаю новый процесс проверки наличия обновлений.')
     if check_tokens():
         try:
+            logger.debug('Пробую инициализировать бота.')
             bot = telegram.Bot(token=TELEGRAM_TOKEN)
         except Exception as error:
             message = f'Сбой при инициализации бота: {error}'
