@@ -55,7 +55,7 @@ def send_message(bot, message):
 def get_api_answer(current_timestamp):
     """Делает запрос к эндпоинту API-сервиса."""
     timestamp = current_timestamp or int(time.time())
-    params = {'from_date': 1644594073}
+    params = {'from_date': timestamp}
 
     try:
         homework_statuses = requests.get(
